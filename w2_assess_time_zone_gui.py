@@ -1,5 +1,5 @@
 import tkinter
-import w2_time_zone
+import w2_assess_time_zone
 import time
 import math
 
@@ -15,9 +15,9 @@ EXPECTED_FNS = ['hours_difference',
 
 # Make fake empty functions for ones that students haven't written yet.
 for f in EXPECTED_FNS:
-    if not hasattr(w2_time_zone, f):
-        print(f, "is missing in w2_time_zone.py.")
-        w2_time_zone.__dict__[f] = lambda *x: 0
+    if not hasattr(w2_assess_time_zone, f):
+        print(f, "is missing in w2_assess_time_zone.py.")
+        w2_assess_time_zone.__dict__[f] = lambda *x: 0
 
 
 # The list of the world's time zones.
@@ -56,7 +56,7 @@ class Clock(object):
         else:
             dlt = time.timezone
 
-        self.diff = w2_time_zone.hours_difference(dlt, 0)
+        self.diff = w2_assess_time_zone.hours_difference(dlt, 0)
 
         self.local_offset = self.diff
         self.now = time.time()          # Allow fast-forwarding
@@ -119,7 +119,7 @@ class Clock(object):
         # Draw a light or dark face depending on whether it's before noon or
         # after.
         utc_hour = (self.now / 60 / 60) % 24
-        hour = int(w2_time_zone.time_from_utc(utc_hour, self.diff))
+        hour = int(w2_assess_time_zone.time_from_utc(utc_hour, self.diff))
         self.canvas.create_oval(15, 15, self.width - 15, self.height - 15,
                                 width=2, fill="#e0e8ff" if hour < 12 else "#334")
 
@@ -132,17 +132,17 @@ class Clock(object):
         self._draw_hand(hours_angle + 180, 5, fill=hands_colour)
 
         # Draw the minute hand.
-        minutes_angle = w2_time_zone.get_minutes(int(self.now)) / 60 * 360
-        if w2_time_zone.time_from_utc(0, self.diff) % 1 == 0.5:
+        minutes_angle = w2_assess_time_zone.get_minutes(int(self.now)) / 60 * 360
+        if w2_assess_time_zone.time_from_utc(0, self.diff) % 1 == 0.5:
             minutes_angle += 180
-        elif w2_time_zone.time_from_utc(0, self.diff) % 1 == 0.75:
+        elif w2_assess_time_zone.time_from_utc(0, self.diff) % 1 == 0.75:
             minutes_angle += 270
         self._draw_hand(minutes_angle, 30, arrow=tkinter.FIRST,
                         arrowshape=(80, 2, 2), fill=hands_colour)
         self._draw_hand(minutes_angle + 180, 5, fill=hands_colour)
 
         # Draw the second hand.
-        seconds_angle = int(w2_time_zone.get_seconds(int(self.now))) / 60 * 360
+        seconds_angle = int(w2_assess_time_zone.get_seconds(int(self.now))) / 60 * 360
         self._draw_hand(seconds_angle, 70, fill='red',
                         width=2, arrow=tkinter.FIRST, arrowshape=(70, 9, 2))
         self._draw_hand(seconds_angle + 180, 18, fill='red',
