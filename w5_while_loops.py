@@ -297,4 +297,4 @@ def increment_items(L, increment):
         L[i] = L[i] + increment
         i = i + 1
 
-    return values
+    return L
